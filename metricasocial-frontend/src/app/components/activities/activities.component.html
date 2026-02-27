@@ -1,0 +1,47 @@
+<div class="activities-container">
+  <h1>Actividades</h1>
+
+  <div class="add-activity">
+    <h3>Agregar Actividad</h3>
+    <div class="form-group">
+      <label>Tipo:</label>
+      <select [(ngModel)]="newActivity.type" name="type">
+        <option value="">Selecciona tipo</option>
+        <option *ngFor="let type of activityTypes" [value]="type">{{ type }}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Puntos:</label>
+      <input [(ngModel)]="newActivity.points" name="points" type="number" />
+    </div>
+    <button (click)="addActivity()" [disabled]="loading">
+      {{ loading ? 'Cargando...' : 'Agregar' }}
+    </button>
+  </div>
+
+  <div class="activities-list">
+    <h3>Lista de Actividades</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Tipo</th>
+          <th>Puntos</th>
+          <th>Fecha</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let activity of activities">
+          <td>{{ activity.type }}</td>
+          <td>{{ activity.points }}</td>
+          <td>{{ activity.timestamp | date }}</td>
+          <td>
+            <button (click)="deleteActivity(activity.id)" class="delete-btn">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p *ngIf="error" class="error">{{ error }}</p>
+</div>

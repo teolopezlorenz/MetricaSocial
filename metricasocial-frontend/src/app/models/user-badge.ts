@@ -1,4 +1,5 @@
 export interface UserBadge {
+  id: number;
   badge: Badge;
   achievedAt: string | Date;
 }

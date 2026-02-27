@@ -20,4 +20,18 @@ export class AuthService {
   login(loginDTO: LoginDTO): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, loginDTO);
   }
+
+  saveSession(response: LoginResponse) {
+    localStorage.setItem('auth_token', response.token);
+    localStorage.setItem('user_id', response.user.id.toString());
+    localStorage.setItem('username', response.user.username);
+    localStorage.setItem('user_email', response.user.email);
+  }
+
+  logout() {
+    localStorage.removeItem('auth_token');
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('username');
+    localStorage.removeItem('user_email');
+  }
 }

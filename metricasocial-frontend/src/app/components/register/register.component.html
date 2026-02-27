@@ -1,0 +1,32 @@
+<div class="register-container">
+  <h1>Registrarse</h1>
+  <form (ngSubmit)="onRegister()">
+    <div>
+      <label>Username:</label>
+      <input [(ngModel)]="registerForm.username" name="username" required />
+    </div>
+    <div>
+      <label>Email:</label>
+      <input [(ngModel)]="registerForm.email" name="email" type="email" required />
+    </div>
+    <div>
+      <label>Password:</label>
+      <input [(ngModel)]="registerForm.password" name="password" type="password" required />
+    </div>
+    <div>
+      <label>Género:</label>
+      <select [(ngModel)]="registerForm.gender" name="gender" required>
+        <option value="">Selecciona un género</option>
+        <option *ngFor="let g of genders" [value]="g">{{ g }}</option>
+      </select>
+    </div>
+    <div>
+      <label>
+        <input [(ngModel)]="registerForm.isPublic" name="isPublic" type="checkbox" />
+        Perfil Público
+      </label>
+    </div>
+    <button type="submit" [disabled]="loading">{{ loading ? 'Cargando...' : 'Registrarse' }}</button>
+    <p *ngIf="error" class="error">{{ error }}</p>
+  </form>
+</div>
