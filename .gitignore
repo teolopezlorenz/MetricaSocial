@@ -1,0 +1,12 @@
+/target/
+/*.iml
+/.idea/
+/*.log
+/.vscode/
+/*.class
+/.mvn/
+/.mvn/
+*.jar
+*.war
+*.class
+*.db
