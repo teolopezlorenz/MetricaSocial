@@ -1,0 +1,23 @@
+<div class="dashboard-container" *ngIf="!loading">
+  <h1>Dashboard</h1>
+  <div *ngIf="dashboard" class="stats">
+    <div class="stat-card">
+      <h3>Puntos Totales</h3>
+      <p>{{ dashboard.totalPoints }}</p>
+    </div>
+    <div class="stat-card">
+      <h3>Actividades</h3>
+      <p>{{ dashboard.totalActivities }}</p>
+    </div>
+    <div class="stat-card">
+      <h3>Promedio</h3>
+      <p>{{ dashboard.averagePointsPerActivity | number: '1.2-2' }}</p>
+    </div>
+    <div class="stat-card" *ngIf="dashboard.rankingPosition">
+      <h3>Posición</h3>
+      <p>{{ dashboard.rankingPosition }}</p>
+    </div>
+  </div>
+  <p *ngIf="error" class="error">{{ error }}</p>
+</div>
+<div *ngIf="loading" class="loading">Cargando...</div>

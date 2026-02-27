@@ -1,0 +1,15 @@
+<div class="badges-container" *ngIf="!loading">
+  <h1>Insignias</h1>
+  <div class="badges-grid">
+    <div *ngFor="let badge of userBadges" class="badge-card">
+      <h3>{{ badge.badge.name }}</h3>
+      <p>{{ badge.badge.description }}</p>
+      <p class="points">Puntos Requeridos: {{ badge.badge.pointsRequired }}</p>
+      <p class="achieved-at">Obtenida: {{ badge.achievedAt | date }}</p>
+      <button (click)="removeBadge(badge.id)" class="delete-btn">Eliminar</button>
+    </div>
+  </div>
+  <p *ngIf="error" class="error">{{ error }}</p>
+</div>
+
+<div *ngIf="loading" class="loading">Cargando...</div>

@@ -1,0 +1,48 @@
+<div class="friends-container" *ngIf="!loading">
+  <h1>Amigos</h1>
+
+  <div class="pending-section">
+    <h3>Solicitudes Pendientes</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Usuario</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let request of pendingRequests">
+          <td>{{ request.username }}</td>
+          <td>
+            <button (click)="acceptRequest(request.id)" class="accept-btn">Aceptar</button>
+            <button (click)="rejectRequest(request.id)" class="reject-btn">Rechazar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="friends-section">
+    <h3>Amigos Aceptados</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Usuario</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let friend of acceptedFriends">
+          <td>{{ friend.username }}</td>
+          <td>
+            <button (click)="removeFriend(friend.id)" class="delete-btn">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p *ngIf="error" class="error">{{ error }}</p>
+</div>
+
+<div *ngIf="loading" class="loading">Cargando...</div>

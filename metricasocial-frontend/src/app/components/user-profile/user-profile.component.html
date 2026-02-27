@@ -1,0 +1,40 @@
+<div class="profile-container" *ngIf="!loading && user">
+  <h1>Perfil de Usuario</h1>
+  <div class="profile-card">
+    <div class="profile-field">
+      <label>Username:</label>
+      <span>{{ user.username }}</span>
+    </div>
+    <div class="profile-field">
+      <label>Email:</label>
+      <span>{{ user.email }}</span>
+    </div>
+    <div class="profile-field">
+      <label>Género:</label>
+      <span>{{ user.gender }}</span>
+    </div>
+    <div class="profile-field">
+      <label>Perfil Público:</label>
+      <span>{{ user.isPublic ? 'Sí' : 'No' }}</span>
+    </div>
+    <div class="profile-field">
+      <label>Total de Puntos:</label>
+      <span>{{ user.totalPoints }}</span>
+    </div>
+    <div class="profile-field">
+      <label>Total de Actividades:</label>
+      <span>{{ user.totalActivities }}</span>
+    </div>
+    <div class="profile-field">
+      <label>Miembro desde:</label>
+      <span>{{ user.createdAt | date }}</span>
+    </div>
+    <div class="profile-field" *ngIf="user.lastLogin">
+      <label>Último login:</label>
+      <span>{{ user.lastLogin | date }}</span>
+    </div>
+  </div>
+  <p *ngIf="error" class="error">{{ error }}</p>
+</div>
+
+<div *ngIf="loading" class="loading">Cargando...</div>
