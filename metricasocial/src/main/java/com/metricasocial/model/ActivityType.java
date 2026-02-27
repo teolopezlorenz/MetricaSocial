@@ -4,5 +4,7 @@ public enum ActivityType {
     PICO,
     LIO,
     MAMADA,
-    SEXO
+    SEXO,
+    ORAL,
+    ANAL
 }
