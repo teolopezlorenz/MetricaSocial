@@ -38,9 +38,27 @@ public class AuthService {
         return userRepository.save(user);
     }
 
-    // Login (pendiente JWT)
-    public Optional<User> login(String usernameOrEmail, String password) {
-        // Por ahora solo buscamos el usuario
-        return userRepository.findByUsername(usernameOrEmail);
+    public User login(String username, String password) throws Exception {
+
+        // Buscamos el usuario por su nombre de usuario.
+        Optional<User> userOpt = userRepository.findByUsername(username);
+
+        // Si no existe, devolvemos un error.
+        if (userOpt.isEmpty()) {
+            throw new Exception("Usuario no encontrado");
+        }
+
+        User user = userOpt.get();
+
+        // Comprobamos que la contraseña es correcta.
+        if (!user.getPassword().equals(password)) {
+            throw new Exception("Contraseña incorrecta");
+        }
+
+        // Actualizamos último login
+        user.setLastLogin(LocalDateTime.now());
+        userRepository.save(user);
+
+        return user;
     }
 }
