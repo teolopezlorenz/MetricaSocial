@@ -84,8 +84,7 @@ public class AuthService {
         return new LoginResponseDTO(token, userResponse);
     }
 
-    // Método para autenticar un usuario existente.
-    public LoginResponseDTO login(String username, String password) throws Exception {
+    public User login(String username, String password) throws Exception {
 
         // Buscamos el usuario por su nombre de usuario.
         Optional<User> userOpt = userRepository.findByUsername(username);
@@ -98,39 +97,14 @@ public class AuthService {
         User user = userOpt.get();
 
         // Comprobamos que la contraseña es correcta.
-        if (!passwordEncoder.matches(password, user.getPassword())) {
+        if (!user.getPassword().equals(password)) {
             throw new Exception("Contraseña incorrecta");
         }
-
-        // Autenticación con AuthenticationManager
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(username, password)
-        );
 
         // Actualizamos último login
         user.setLastLogin(LocalDateTime.now());
         userRepository.save(user);
 
-        // Generar token JWT
-        UserDetails userDetails = org.springframework.security.core.userdetails.User
-                .withUsername(user.getUsername())
-                .password(user.getPassword())
-                .authorities("ROLE_USER")
-                .build();
-        String token = jwtTokenUtil.generateToken(userDetails);
-
-        // Crear DTO de respuesta
-        UserResponseDTO userResponse = new UserResponseDTO();
-        userResponse.setId(user.getId());
-        userResponse.setUsername(user.getUsername());
-        userResponse.setEmail(user.getEmail());
-        userResponse.setGender(user.getGender());
-        userResponse.setIsPublic(user.isPublic());
-        userResponse.setCreatedAt(user.getCreatedAt());
-        userResponse.setLastLogin(user.getLastLogin());
-        userResponse.setTotalPoints(user.getTotalPoints());
-        userResponse.setTotalActivities(user.getTotalActivities());
-
-        return new LoginResponseDTO(token, userResponse);
+        return user;
     }
 }
