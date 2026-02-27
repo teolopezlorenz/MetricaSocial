@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.metricasocial.dto.LoginDTO;
 import com.metricasocial.dto.UserRegisterDTO;
+import com.metricasocial.dto.UserResponseDTO;
 import com.metricasocial.model.User;
 import com.metricasocial.service.AuthService;
 
@@ -44,7 +46,33 @@ public class AuthController {
         }
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@Valid @RequestBody LoginDTO loginDTO) {
+        try {
 
+            // Intentamos autenticar al usuario con el servicio de autenticación.
+            User user = authService.login(loginDTO.getUsername(), loginDTO.getPassword());
+
+            // Convertir la entidad a un DTO.
+            UserResponseDTO responseDTO = new UserResponseDTO();
+            responseDTO.setId(user.getId());
+            responseDTO.setUsername(user.getUsername());
+            responseDTO.setEmail(user.getEmail());
+            responseDTO.setGender(user.getGender());
+            responseDTO.setIsPublic(user.isPublic());
+            responseDTO.setCreatedAt(user.getCreatedAt());
+            responseDTO.setLastLogin(user.getLastLogin());
+            responseDTO.setTotalPoints(user.getTotalPoints());
+            responseDTO.setTotalActivities(user.getTotalActivities());
+
+            // Devolver el DTO al cliente.
+            return ResponseEntity.ok(responseDTO);
+
+        // Si hay algún error, devolvemos un mensaje de error al cliente.
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
 
 
