@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.metricasocial.dto.LoginDTO;
+import com.metricasocial.dto.LoginResponseDTO;
 import com.metricasocial.dto.UserRegisterDTO;
 import com.metricasocial.model.User;
 import com.metricasocial.service.AuthService;
@@ -16,13 +18,13 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-    
+
     @Autowired
     private AuthService authService;
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody UserRegisterDTO registerDTO) {
-        
+
         // Validamos los datos que recibimos del cliente, si no hay errores, creamos un nuevo usuario y lo registramos.
         try {
 
@@ -35,17 +37,28 @@ public class AuthController {
             user.setPublic(registerDTO.getIsPublic() != null ? registerDTO.getIsPublic() : false);
 
             // Registramos el usuario.
-            User registeredUser = authService.registerUser(user);
+            LoginResponseDTO registeredUser = authService.registerUser(user);
             return ResponseEntity.ok(registeredUser);
-        
-        // Si hay algún error, devolvemos un mensaje de error al cliente.
+
+            // Si hay algún error, devolvemos un mensaje de error al cliente.
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@Valid @RequestBody LoginDTO loginDTO) {
+        try {
 
+            // Intentamos autenticar al usuario con el servicio de autenticación.
+            LoginResponseDTO response = authService.login(loginDTO.getUsername(), loginDTO.getPassword());
 
+            // Devolver el DTO al cliente (incluye token + user)
+            return ResponseEntity.ok(response);
 
-
+            // Si hay algún error, devolvemos un mensaje de error al cliente.
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }
