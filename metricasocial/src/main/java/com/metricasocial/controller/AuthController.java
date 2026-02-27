@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.metricasocial.dto.LoginDTO;
+import com.metricasocial.dto.LoginResponseDTO;
 import com.metricasocial.dto.UserRegisterDTO;
 import com.metricasocial.dto.UserResponseDTO;
 import com.metricasocial.model.User;
@@ -18,13 +19,13 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-    
+
     @Autowired
     private AuthService authService;
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody UserRegisterDTO registerDTO) {
-        
+
         // Validamos los datos que recibimos del cliente, si no hay errores, creamos un nuevo usuario y lo registramos.
         try {
 
@@ -37,10 +38,10 @@ public class AuthController {
             user.setPublic(registerDTO.getIsPublic() != null ? registerDTO.getIsPublic() : false);
 
             // Registramos el usuario.
-            User registeredUser = authService.registerUser(user);
+            LoginResponseDTO registeredUser = authService.registerUser(user);
             return ResponseEntity.ok(registeredUser);
-        
-        // Si hay algún error, devolvemos un mensaje de error al cliente.
+
+            // Si hay algún error, devolvemos un mensaje de error al cliente.
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -73,7 +74,4 @@ public class AuthController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
-
-
 }
